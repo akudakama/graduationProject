@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderState status;
 
-    private Integer totalAmount;
+    private BigDecimal totalAmount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore

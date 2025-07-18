@@ -1,7 +1,8 @@
 package com.example.dproject.controller;
 
+import com.example.dproject.dto.*;
 import com.example.dproject.entity.*;
-import com.example.dproject.repository.*;
+import com.example.dproject.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,95 +15,86 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
-    private final OrderRepository orderRepository;
+    private final ProductService productService;
+    private final CategoryService categoryService;
+    private final UserService userService;
+    private final OrderService orderService;
 
     // ========== PRODUCT CRUD ==========
 
     @PostMapping("/products")
-    public Product createProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDto product) {
+        return ResponseEntity.ok(productService.saveProduct(product));
     }
 
     @PutMapping("/products/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updated) {
-        Product product = productRepository.findById(id).orElseThrow();
-        product.setName(updated.getName());
-        product.setDescription(updated.getDescription());
-        product.setPrice(updated.getPrice());
-        product.setStockQuantity(updated.getStockQuantity());
-        product.setCategory(updated.getCategory());
-        return productRepository.save(product);
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductDto dto) {
+        return ResponseEntity.ok(productService.updateProduct(id, dto));
     }
 
+
     @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productRepository.deleteById(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 
     // ========== CATEGORY CRUD ==========
 
     @PostMapping("/categories")
-    public Category createCategory(@RequestBody Category category) {
-        return categoryRepository.save(category);
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryDto dto) {
+        return ResponseEntity.ok(categoryService.createCategory(dto));
     }
 
+
     @PutMapping("/categories/{id}")
-    public Category updateCategory(@PathVariable Long id, @RequestBody Category updated) {
-        Category category = categoryRepository.findById(id).orElseThrow();
-        category.setName(updated.getName());
-        return categoryRepository.save(category);
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoryDto updated) {
+        return ResponseEntity.ok(categoryService.updateCategory(id, updated));
     }
 
     @DeleteMapping("/categories/{id}")
-    public void deleteCategory(@PathVariable Long id) {
-        categoryRepository.deleteById(id);
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.noContent().build();
     }
 
     // ========== USER ROLE MANAGEMENT ==========
 
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUserDtos());
+    }
+
     @PutMapping("/users/{id}/role")
-    public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        try {
-            Role newRole = Role.valueOf(body.get("role").toUpperCase());
-            User user = userRepository.findById(id).orElseThrow();
-            user.setRole(newRole);
-            return ResponseEntity.ok(userRepository.save(user));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid role: " + body.get("role"));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("General error: " + e.getMessage());
-        }
+    public void updateUserRole(@PathVariable Long id, @RequestBody UpdateRoleRequest request) {
+        userService.updateUserRole(id, request.getRole());
     }
 
 
     @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     // ========== ORDER MANAGEMENT ==========
 
     @PutMapping("/orders/{id}/status")
-    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        try {
-            Order order = orderRepository.findById(id).orElseThrow();
-            OrderState newStatus = OrderState.valueOf(body.get("status").toUpperCase());
-            order.setStatus(newStatus);
-            return ResponseEntity.ok(orderRepository.save(order));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid order status: " + body.get("status"));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("General error: " + e.getMessage());
-        }
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestBody UpdateOrderStatusRequest request) {
+        String status = request.getStatus().name();
+        orderService.updateOrderStatus(id, status);
+        return ResponseEntity.ok("Order status updated successfully");
+
+    }
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
 
     @DeleteMapping("/orders/{id}")
-    public void deleteOrder(@PathVariable Long id) {
-        orderRepository.deleteById(id);
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
