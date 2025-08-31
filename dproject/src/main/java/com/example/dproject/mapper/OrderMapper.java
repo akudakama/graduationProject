@@ -13,14 +13,17 @@ public class OrderMapper {
         OrderDto dto = new OrderDto();
         dto.setId(order.getId());
         dto.setOrderDate(order.getOrderDate());
-        dto.setStatus(order.getStatus().name());
+        dto.setStatus(order.getStatus() != null ? order.getStatus().name() : null);
         dto.setTotalAmount(order.getTotalAmount());
 
-        List<OrderItemDto> itemDtos = order.getItems().stream().map(OrderMapper::toDto).toList();
-        dto.setItems(itemDtos);
+        List<OrderItemDto> itemDtos = order.getItems() != null
+                ? order.getItems().stream().map(OrderMapper::toDto).toList()
+                : List.of();
 
+        dto.setItems(itemDtos);
         return dto;
     }
+
 
     private static OrderItemDto toDto(OrderItem item) {
         OrderItemDto dto = new OrderItemDto();

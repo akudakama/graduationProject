@@ -20,19 +20,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+    public UserDto getUserById(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+        return new UserDto(user.getId(),user.getUsername(),user.getEmail(), user.getFullName(), user.getRole().name());
     }
 
     @Override
     @Transactional
-    public User updateUser(Long id, User updated) {
+    public UserDto updateUser(Long id, User updated) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
         user.setEmail(updated.getEmail());
         user.setFullName(updated.getFullName());
-        return userRepository.save(user);
+        userRepository.save(user);
+        return new UserDto(user.getId(),user.getUsername(),user.getEmail(), user.getFullName(), user.getRole().name());
     }
 
     @Override

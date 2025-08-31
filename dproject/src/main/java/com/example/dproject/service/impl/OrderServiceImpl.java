@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order placeOrder(Long userId) {
+    public OrderDto placeOrder(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "User not found with id: " + userId));
@@ -108,8 +108,8 @@ public class OrderServiceImpl implements OrderService {
         cart.getItems().clear();
         cartRepository.save(cart);
 
+        orderRepository.save(order);
 
-
-        return orderRepository.save(order);
+        return OrderMapper.toDto(order);
     }
 }

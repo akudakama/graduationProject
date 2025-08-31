@@ -6,7 +6,7 @@ import com.example.dproject.entity.Order;
 import java.util.List;
 
 public interface OrderService {
-    Order placeOrder(Long userId);
+    OrderDto placeOrder(Long userId);
     List<OrderDto> getUserOrders(Long userId);
     void updateOrderStatus(Long id, String status);
     void deleteOrder(Long id);

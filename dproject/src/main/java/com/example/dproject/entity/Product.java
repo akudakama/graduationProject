@@ -2,6 +2,7 @@ package com.example.dproject.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,8 +24,9 @@ public class Product {
     private String imageUrl;
     private Integer stockQuantity;
 
-    @ManyToOne
     @JoinColumn(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

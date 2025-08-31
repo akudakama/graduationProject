@@ -6,6 +6,7 @@ import com.example.dproject.entity.User;
 import com.example.dproject.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +19,15 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping
     public List<OrderDto> getUserOrders(@AuthenticationPrincipal User user) {
         return orderService.getUserOrders(user.getId());
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/place")
     public ResponseEntity<?> placeOrder(@AuthenticationPrincipal User user) {
-        System.out.println("Authenticated user: " + user.getId());
 
         orderService.placeOrder(user.getId());
         return ResponseEntity.ok().build();
