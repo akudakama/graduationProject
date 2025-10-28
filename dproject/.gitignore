@@ -1,0 +1,27 @@
+# === Maven ===
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+
+# === Logs ===
+*.log
+logs/
+
+# === OS system ===
+.DS_Store
+Thumbs.db
+
+# === Env files ===
+.env
+application.properties
+application.yml
+application-dev.yml
+application-prod.yml
+
+# === Misc ===
+*.class
+*.db
