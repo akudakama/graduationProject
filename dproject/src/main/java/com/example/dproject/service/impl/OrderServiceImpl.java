@@ -15,7 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Objects;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 import java.util.Optional;
 
 @Service
@@ -26,7 +29,10 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+<<<<<<< HEAD
     private final AddressRepository addressRepository;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 
     @Override
     @Transactional(readOnly = true)
@@ -69,7 +75,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+<<<<<<< HEAD
     public OrderDto placeOrder(Long userId, Long addressId) {
+=======
+    public OrderDto placeOrder(Long userId) {
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "User not found with id: " + userId));
@@ -79,10 +89,15 @@ public class OrderServiceImpl implements OrderService {
                         HttpStatus.NOT_FOUND, "Cart not found for user id: " + userId));
 
         List<CartItem> cartItems = Optional.ofNullable(cart.getItems()).orElse(List.of());
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
         if (cartItems.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cart is empty");
         }
 
+<<<<<<< HEAD
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST, "Invalid address id: " + addressId));
@@ -91,11 +106,14 @@ public class OrderServiceImpl implements OrderService {
         }
 
 
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
         Order order = new Order();
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(OrderState.NEW);
 
+<<<<<<< HEAD
         AddressSnapshot snap = new AddressSnapshot();
         snap.setFirstName(address.getFirstName());
         snap.setLastName(address.getLastName());
@@ -108,6 +126,8 @@ public class OrderServiceImpl implements OrderService {
         snap.setCountryCode(address.getCountryCode());
         order.setShippingAddress(snap);
 
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
         List<OrderItem> orderItems = cartItems.stream().map(cartItem -> {
             OrderItem item = new OrderItem();
             item.setOrder(order);
@@ -116,11 +136,22 @@ public class OrderServiceImpl implements OrderService {
             item.setPriceAtPurchase(cartItem.getProduct().getPrice());
             return item;
         }).toList();
+<<<<<<< HEAD
         order.setItems(orderItems);
 
         BigDecimal total = orderItems.stream()
                 .map(i -> i.getPriceAtPurchase().multiply(BigDecimal.valueOf(i.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+=======
+
+        order.setItems(orderItems);
+
+
+        BigDecimal total = orderItems.stream()
+                .map(i -> i.getPriceAtPurchase().multiply(BigDecimal.valueOf(i.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
         order.setTotalAmount(total);
 
         cart.getItems().clear();
@@ -130,5 +161,8 @@ public class OrderServiceImpl implements OrderService {
 
         return OrderMapper.toDto(order);
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 }

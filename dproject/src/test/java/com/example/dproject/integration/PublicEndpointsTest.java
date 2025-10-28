@@ -1,6 +1,9 @@
 package com.example.dproject.integration;
 
+<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,10 +15,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+<<<<<<< HEAD
 @RequiredArgsConstructor
 public class PublicEndpointsTest {
 
     private final MockMvc mockMvc;
+=======
+public class PublicEndpointsTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 
     @Test
     public void testGetAllProducts_PublicAccess() throws Exception {

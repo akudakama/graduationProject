@@ -23,7 +23,10 @@ public class OrderServiceTest {
     @Mock private UserRepository userRepository;
     @Mock private CartRepository cartRepository;
     @Mock private CartItemRepository cartItemRepository;
+<<<<<<< HEAD
     @Mock private AddressRepository addressRepository;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 
     @InjectMocks private OrderServiceImpl orderService;
 
@@ -32,6 +35,7 @@ public class OrderServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+<<<<<<< HEAD
 
     @Test
     void testPlaceOrder_Success() {
@@ -57,6 +61,16 @@ public class OrderServiceTest {
         Product product = new Product();
         product.setId(101L);
         product.setPrice(BigDecimal.TEN);
+=======
+    // === PLACE ORDER ===
+
+ /*   @Test
+    void testPlaceOrder_Success() {
+        Long userId = 1L;
+
+        User user = new User(); user.setId(userId);
+        Product product = new Product(); product.setId(101L); product.setPrice(BigDecimal.TEN);
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
@@ -65,6 +79,7 @@ public class OrderServiceTest {
         Cart cart = new Cart();
         cart.setItems(new ArrayList<>(List.of(cartItem)));
 
+<<<<<<< HEAD
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(cartRepository.findByUserId(userId)).thenReturn(Optional.of(cart));
         when(addressRepository.findById(addressId)).thenReturn(Optional.of(address));
@@ -96,26 +111,61 @@ public class OrderServiceTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> orderService.placeOrder(1L, addressId));
+=======
+        Order savedOrder = new Order();
+        savedOrder.setId(999L);
+        savedOrder.setTotalAmount(BigDecimal.valueOf(20));
+        savedOrder.setStatus(OrderState.NEW);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(cartRepository.findByUserId(userId)).thenReturn(Optional.of(cart));
+        when(orderRepository.save(any(Order.class))).thenReturn(savedOrder);
+
+        Order result = orderService.placeOrder(userId);
+
+        assertEquals(999L, result.getId());
+        assertEquals(OrderState.NEW, result.getStatus());
+        assertEquals(BigDecimal.valueOf(20), result.getTotalAmount());
+    }*/
+
+    @Test
+    void testPlaceOrder_UserNotFound() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> orderService.placeOrder(1L));
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
     }
 
     @Test
     void testPlaceOrder_CartNotFound() {
+<<<<<<< HEAD
         Long addressId = 77L;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
         when(cartRepository.findByUserId(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class,
+<<<<<<< HEAD
                 () -> orderService.placeOrder(1L, addressId));
+=======
+                () -> orderService.placeOrder(1L));
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
     }
 
     @Test
     void testPlaceOrder_EmptyCart() {
+<<<<<<< HEAD
         Long addressId = 77L;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
         Cart cart = new Cart(); cart.setItems(List.of());
         when(cartRepository.findByUserId(1L)).thenReturn(Optional.of(cart));
 
         assertThrows(ResponseStatusException.class,
+<<<<<<< HEAD
                 () -> orderService.placeOrder(1L, addressId));
     }
 
@@ -165,6 +215,9 @@ public class OrderServiceTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> orderService.placeOrder(userId, addressId));
+=======
+                () -> orderService.placeOrder(1L));
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
     }
 
 
@@ -185,6 +238,10 @@ public class OrderServiceTest {
                 () -> orderService.updateOrderStatus(1L, "NEW"));
     }
 
+<<<<<<< HEAD
+=======
+    // === DELETE ===
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 
     @Test
     void testDeleteOrder_Success() {
@@ -203,6 +260,10 @@ public class OrderServiceTest {
                 () -> orderService.deleteOrder(1L));
     }
 
+<<<<<<< HEAD
+=======
+    // === GET ===
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 
     @Test
     void testGetUserOrders() {

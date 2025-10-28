@@ -34,6 +34,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<OrderItem> items;
+<<<<<<< HEAD
 
     @AttributeOverrides({
             @AttributeOverride(name="firstName",  column=@Column(name="ship_first_name")),
@@ -48,4 +49,6 @@ public class Order {
     })
     @Embedded
     private AddressSnapshot shippingAddress;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 }

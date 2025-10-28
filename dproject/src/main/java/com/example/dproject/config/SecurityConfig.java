@@ -1,7 +1,10 @@
 package com.example.dproject.config;
 
 import jakarta.servlet.http.HttpServletResponse;
+<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
+=======
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +28,17 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+<<<<<<< HEAD
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
+=======
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfig {
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
+>>>>>>> 2eb0b70457c845a808fdf1aa218e14ca4e36ef7d
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
